@@ -14,7 +14,11 @@ function simpro_getToken() {
 }
 
 function _authHeader() {
-  return { 'Authorization': 'Bearer ' + simpro_getToken(), 'Content-Type': 'application/json' };
+  return { 
+    'Authorization': 'Bearer ' + simpro_getToken(), 
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true'
+  };
 }
 
 // ── MASTER DATA PRODUK (tetap di frontend untuk hitung lokal) ────
