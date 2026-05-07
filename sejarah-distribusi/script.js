@@ -38,8 +38,8 @@ async function renderTable() {
     var tglProd    = row.tgl_produksi   || row.tglProduksi   || '-';
 
     // Format tanggal untuk tampilan (DD/MM/YY)
-    if (tglDistrib && tglDistrib.indexOf('-') !== -1) tglDistrib = simpro_isoToDMY(tglDistrib);
-    if (tglProd    && tglProd.indexOf('-')    !== -1) tglProd    = simpro_isoToDMY(tglProd);
+    if (tglDistrib) tglDistrib = simpro_isoToDMY(tglDistrib.split('T')[0]);
+if (tglProd)    tglProd    = simpro_isoToDMY(tglProd.split('T')[0]);
 
     var tr = document.createElement('tr');
     tr.innerHTML =
