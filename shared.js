@@ -7,7 +7,7 @@
    ══════════════════════════════════════════════════════════════ */
 
 // ── CONFIG API ───────────────────────────────────────────────────
-var API = 'https://isaiah-aphacic-tropologically.ngrok-free.dev/api';
+var API = 'https://simpro-backend-production.up.railway.app/api';
 
 function simpro_getToken() {
   return localStorage.getItem('simpro_token');
