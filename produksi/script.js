@@ -45,8 +45,8 @@ function renderTable() {
   tr.innerHTML =
     '<td>' + b.nama + '</td>' +
     '<td>' + b.satuan + '</td>' +
-    '<td>' + b.kebutuhanKg + ' kg / produksi</td>' +
-    '<td>Rp ' + b.harga.toLocaleString('id-ID') + ' / kg</td>';
+    '<td>' + b.kebutuhanKg + '</td>' +
+'<td>Rp ' + b.harga.toLocaleString('id-ID') + '</td>';
   var tdStok = document.createElement('td');
   tdStok.appendChild(input);
   tr.appendChild(tdStok);
@@ -71,10 +71,8 @@ function hitung() {
   var totalBungkus = Math.floor(totalButir / b.butirPerBungkus);
   var totalBiaya   = stokKg * b.harga;
 
-  document.getElementById('outEstimasi').textContent =
-    totalBungkus + ' bungkus (' + totalButir + ' butir)';
-  document.getElementById('outBiaya').textContent =
-    'Rp ' + Math.round(totalBiaya).toLocaleString('id-ID');
+  document.getElementById('outEstimasi').textContent = totalBungkus + ' bungkus';
+  document.getElementById('outBiaya').textContent = 'Rp ' + Math.round(totalBiaya).toLocaleString('id-ID');
 }
 
 function reset() {
