@@ -38,8 +38,8 @@ async function renderTable() {
     var tglProd    = row.tgl_produksi   || row.tglProduksi   || '-';
 
     // Format tanggal untuk tampilan (DD/MM/YY)
-    if (tglDistrib) tglDistrib = simpro_isoToDMY(tglDistrib.split('T')[0]);
-    if (tglProd)    tglProd    = simpro_isoToDMY(tglProd.split('T')[0]);
+    if (tglDistrib && tglDistrib.indexOf('-') !== -1) tglDistrib = simpro_isoToDMY(tglDistrib);
+    if (tglProd    && tglProd.indexOf('-')    !== -1) tglProd    = simpro_isoToDMY(tglProd);
 
     var tr = document.createElement('tr');
     tr.innerHTML =
@@ -88,43 +88,8 @@ function optionsHtml(selected) {
 }
 
 async function updateStatus(id, val) {
-  var hasil = await simpro_updateDistribusi(id, { status: val });
-  if (hasil && hasil.error) {
-    showToast('Gagal update status: ' + hasil.error);
-    return;
-  }
-  // Update cache lokal langsung tanpa fetch ulang
-  var idx = _cachedData.findIndex(function(d) { return d.id === id; });
-  if (idx !== -1) _cachedData[idx].status = val;
-  // Re-render dari cache yang sudah diupdate
-  var tbody = document.getElementById('distribusiTableBody');
-  tbody.innerHTML = '';
-  var start    = (currentPage - 1) * perPage;
-  var end      = Math.min(start + perPage, _cachedData.length);
-  var pageData = _cachedData.slice(start, end);
-  pageData.forEach(function(row) {
-    var rowId = row.id;
-    var tglDistrib = row.tgl_distribusi || '-';
-    var tglProd    = row.tgl_produksi   || '-';
-    if (tglDistrib) tglDistrib = simpro_isoToDMY(tglDistrib.split('T')[0]);
-    if (tglProd)    tglProd    = simpro_isoToDMY(tglProd.split('T')[0]);
-    var tr = document.createElement('tr');
-    tr.innerHTML =
-      '<td>' + tglDistrib + '</td>' +
-      '<td>' + (row.pelanggan || '-') + '</td>' +
-      '<td>' + tglProd + '</td>' +
-      '<td>' + (row.jumlah || 0) + '</td>' +
-      '<td>' +
-        "<button class='edit-btn' onclick='openModal(" + rowId + ")' title='Edit'>✏️</button> " +
-        "<button class='edit-btn' onclick='konfirmasiHapus(" + rowId + ")' title='Hapus' style='color:#c0392b;margin-left:4px;'>🗑️</button>" +
-      '</td>' +
-      '<td>' +
-        "<select class='status-select " + _statusClass(row.status) + "' onchange='updateStatus(" + rowId + ", this.value)'>" +
-          optionsHtml(row.status) +
-        '</select>' +
-      '</td>';
-    tbody.appendChild(tr);
-  });
+  await simpro_updateDistribusi(id, { status: val });
+  await renderTable();
   showToast('Status diperbarui: ' + val);
 }
 

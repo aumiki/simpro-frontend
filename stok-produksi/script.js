@@ -156,3 +156,4 @@ function setupMobileNav() {
     });
   }
 }
+document.addEventListener('DOMContentLoaded', setupMobileNav);
